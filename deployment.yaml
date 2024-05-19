@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-app
+  labels:
+    app: frontend-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: frontend-app
+  template:
+    metadata:
+      labels:
+        app: frontend-app
+    spec:
+      volumes:
+        - name: datastore
+          persistentVolumeClaim:
+            claimName: frontend-app-pvc
+      containers:
+      - name: frontend-app
+        image: aryaraj23/demo-frontend:1.0.1
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /var/lib/store
+          name: datastore
